@@ -7,7 +7,7 @@
     "dev": "node server.js",
     "lint": "eslint ./**/*.js* --color --cache",
     "build": "next build",
-    "start": "NODE_ENV=production server.js",
+    "start": "node server.js",
     "heroku-postbuild": "npm run build"
   },
   "license": "MIT",
