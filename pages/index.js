@@ -125,6 +125,8 @@ class Board extends React.Component {
     let location = `is on ${this.state.board[player.location].name}`;
     if (player.isBankrupt) {
       location = 'is bankrupt 😢';
+    } else if (player.inJail) {
+      location = 'is In Jail';
     }
     return <div key={player.name} className="team-status">{player.name} {location}</div>;
   })
