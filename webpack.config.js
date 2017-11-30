@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
   entry: './src/client.js',
   output: {
@@ -15,5 +17,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['', '.js', '.json']
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.GET_HOST': JSON.stringify(process.env.API_HOST)
+    })
+  ]
 };
