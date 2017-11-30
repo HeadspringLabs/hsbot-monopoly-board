@@ -15,6 +15,7 @@ Node/React/Express app to visually render the current monopoly board state. Poll
 
 
 ## Run on the server
+    (npm run dev locally first to build the bundle)
 
     > npm install
     > cross your fingers
