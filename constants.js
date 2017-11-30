@@ -1,5 +1,5 @@
 module.exports = {
-  GET_HOST: process.env.GET_HOST || 'http://localhost:3000/get',
+  GET_HOST: process.env.GET_HOST || 'http://hsbot-monopoly-board.azurewebsites.net/get',
   DATA_URL: 'https://hsbot.blob.core.windows.net/hsbot-brain/brain-dump.json',
   coordinates: [
     { x: 600, y: 630 },
