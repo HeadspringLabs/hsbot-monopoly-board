@@ -1,4 +1,4 @@
-#Monopoly Board
+Monopoly Board
 ==============
 
 Node/React/Express app to visually render the current monopoly board state. Polls once a minute to update the board.
@@ -15,11 +15,10 @@ Node/React/Express app to visually render the current monopoly board state. Poll
 
 
 ## Run on the server
-    (npm run dev locally first to build the bundle)
 
-    > npm install
-    > cross your fingers
-    > npm run express-server
+    > npm install (repeatedly untill errors go away; install individual packages if needed.)
+    > npm run build
+    > npm run express-server (if it shows an error about regenerator-runtime, run `npm install regenerator-runtime` then this one again)
 
 
 
