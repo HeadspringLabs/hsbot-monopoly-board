@@ -1,5 +1,6 @@
 module.exports = {
-  API_HOST: process.env.API_HOST || 'http://localhost:3333/api',
+  GET_HOST: `http://localhost:${process.env.PORT || 3000}/get`,
+  DATA_URL: 'https://hsbot.blob.core.windows.net/hsbot-brain/brain-dump.json',
   coordinates: [
     { x: 600, y: 630 },
     { x: 540, y: 630 },

@@ -1,32 +1,33 @@
-/* eslint-disable react/no-danger */
 import React from 'react';
-import PropTypes from 'prop-types';
-import Head from 'next/head';
-import External from '../external';
 import { coordinates } from '../constants';
+import serverFetch from '../serverFetch';
 
-import stylesheet from '../styles/board.scss';
-
+const dallas = new Image();
+const houston = new Image();
+const dmz = new Image();
+const deltaCity = new Image();
+const gotham = new Image();
+const monterrey = new Image();
+dallas.src = '/images/Dallas.png';
+houston.src = '../images/Houston.png';
+dmz.src = '/images/DMZ.png';
+deltaCity.src = '/images/DeltaCity.png';
+gotham.src = '/images/Gotham.png';
+monterrey.src = '/images/Monterrey.png';
 
 class Board extends React.Component {
-  static async getInitialProps() {
-    const res = await External.getData().catch(err => console.error(err));
-    return {
-      players: res.body._private.monopolyPlayers,
-      board: res.body._private.monopolyBoard
-    };
-  }
-
   constructor(props) {
     super(props);
+
     this.state = {
-      players: props.players,
-      board: props.board
+      players: [],
+      board: []
     };
   }
 
   componentDidMount() {
-    this.renderPieces();
+    this.getCurrentData();
+    // poll once per minute for new data
     setInterval(this.getCurrentData, 60000);
   }
 
@@ -35,19 +36,6 @@ class Board extends React.Component {
     const context = canvas.getContext('2d');
     context.imageSmoothingEnabled = false;
     context.clearRect(0, 0, canvas.width, canvas.height);
-
-    const dallas = new Image();
-    const houston = new Image();
-    const dmz = new Image();
-    const deltaCity = new Image();
-    const gotham = new Image();
-    const monterrey = new Image();
-    dallas.src = '../static/Dallas.png';
-    houston.src = '../static/Houston.png';
-    dmz.src = '../static/DMZ.png';
-    deltaCity.src = '../static/DeltaCity.png';
-    gotham.src = '../static/Gotham.png';
-    monterrey.src = '../static/Monterrey.png';
 
     this.renderPiece(0, deltaCity, context);
     this.renderPiece(1, gotham, context);
@@ -58,12 +46,13 @@ class Board extends React.Component {
   }
 
   getCurrentData = () => {
-    External.getData()
-    .then(result =>
+    serverFetch.get()
+    .then(async (result) => {
       this.setState({
-        players: result.body._private.monopolyPlayers
-      }, this.renderPieces)
-    ).catch(err => console.error(err));
+        players: result.body._private.monopolyPlayers,
+        board: result.body._private.monopolyBoard
+      }, this.renderPieces);
+    }).catch(err => console.error(err));
   }
 
   renderPiece = (playerIndex, image, context) => {
@@ -81,7 +70,8 @@ class Board extends React.Component {
     let piecesAtThatLocation = 0;
     for (let i = 0; i < index; i += 1) {
       const checkPlayer = this.state.players[i];
-      if (checkPlayer.location === location && !checkPlayer.isBankrupt && checkPlayer.inJail === inJail) {
+      if (checkPlayer.location === location && !checkPlayer.isBankrupt &&
+          checkPlayer.inJail === inJail) {
         piecesAtThatLocation += 1;
       }
     }
@@ -134,15 +124,7 @@ class Board extends React.Component {
   render() {
     return (
       <div>
-        <Head>
-          <title>Headspringopoly Board</title>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-          <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />
-          <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
-          <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
-        </Head>
-        <img alt="board" className="board" src="../static/HeadspringopolyBoard.png" />
+        <img alt="board" className="board" src="/images/HeadspringopolyBoard.png" />
         <canvas id="game-pieces" height="700" width="700" />
         <div className="status">
           {this.renderStatus()}
@@ -151,15 +133,5 @@ class Board extends React.Component {
     );
   }
 }
-
-Board.propTypes = {
-  players: PropTypes.array,
-  board: PropTypes.array
-};
-
-Board.defaultProps = {
-  players: [],
-  board: []
-};
 
 export default Board;

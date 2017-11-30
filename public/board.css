@@ -1,5 +1,3 @@
-$height: 700px;
-
 html, body {
 	margin: 0;
 	padding: 0;
@@ -7,7 +5,7 @@ html, body {
 }
 
 img.board {
-	max-height: calc(#{$height} - 1em);
+	max-height: calc(700px - 1em);
 	padding: 0.5em;
 }
 
